@@ -1,11 +1,18 @@
+#!/usr/bin/python
+
 import random
 from random import randint, randrange
+import customer
 
-class Account:
-    id = 0
-    account_number = 0
-    customer_id = 0
-    current_balance = 0
+from pydantic import BaseModel
+from models.customer import Customer
+
+
+class Account(BaseModel):
+    id: int
+    account_number: str
+    customer: Customer
+    current_balance: float
 
     
     def __init__(self, customer_id):
