@@ -1,5 +1,5 @@
 from pydantic import BaseModel
-from address import Address
+from models.address import Address
 
 
 class Customer(BaseModel):
