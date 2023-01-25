@@ -6,7 +6,7 @@ from models.account import Account
 
 
 class AddressRepository():
-    def insert(self, address: Address) -> Address:
+    def insert(self, account: Account) -> Address:
         with psycopg2.connect() as db:
             with db.cursor() as cursor:
                
@@ -15,14 +15,14 @@ class AddressRepository():
              VALUES(%(address)s, %(city)s, %(state)s, %(zip_code)s) 
              RETURNING id
              """, {
-                    'address': address,
-                    'city': address.city,
-                    'state': address.state,
-                    'zip_code': address.zip_code
+                    'address': account.customer.address,
+                    'city': account.customer.address.city,
+                    'state': account.customer.address.state,
+                    'zip_code': account.customer.address.zip_code
 
 
 
             }
             )
-            address.id = cursor.fetchone()[0]
-        return address
+            account.customer.id = cursor.fetchone()[0]
+        return account.customer.address

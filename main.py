@@ -1,7 +1,7 @@
 import uvicorn
 from fastapi import FastAPI
 from models.account import Account
-from services import AccountService
+from services.AccountService import AccountService
 from repositories.account import AccountRepository
 from repositories.customer import CustomerRepository
 from repositories.address import AddressRepository
