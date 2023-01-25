@@ -24,11 +24,11 @@ async def open_account(account: Account):
 async def grab_account(account: Account) -> Account:
     return account_service.get_account(account.account_number)
 
-@app.get('/accounts/{account_number}/deposit/{amount}')
-async def deposit(account_number, amount, account: Account) -> Account:
-    account.current_balance -= amount
+# @app.get('/accounts/{account_number}/deposit/{amount}')
+# async def deposit(account_number, amount, account: Account) -> Account:
+#     account.current_balance += amount
+#     return grab_account(account)
 
 
-#if __name__ == "__main__":
-    #uvicorn.run("app:app", host="0.0.0.0", port=8080, reload=True,
-    #            timeout_keep_alive=3600, debug=True, workers=10)
+if __name__ == "__main__":
+    uvicorn.run("main:app",host="0.0.0.0",port=8080,reload=True)
