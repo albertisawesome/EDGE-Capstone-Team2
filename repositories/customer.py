@@ -7,9 +7,21 @@ from models.account import Account
 
 
 class CustomerRepository():
+
+    conn = psycopg2.connect( 
+    host="group2rds.ckokfd9swhyk.us-west-2.rds.amazonaws.com", 
+    database="group2rds", 
+    user="postgres", 
+    password="password") 
+  
+
+    #cursor = conn.cursor()  
+
+
+
     def insert(self, customer: Customer) -> Customer:
-        with psycopg2.connect() as db:
-            with db.cursor() as cursor:
+        with psycopg2.connect() as conn:
+            with conn.cursor() as cursor:
 
 
                 cursor.execute("""INSERT INTO customer(FirstName, LastName, Address, EmailAddress)
@@ -25,11 +37,12 @@ class CustomerRepository():
             }
             )
             customer.id = cursor.fetchone()[0]
+            conn.close()
         return customer
 
     def get_by_id(self, id) -> Customer:
-        with psycopg2.connect() as db:
-            with db.cursor() as cursor:
+        with psycopg2.connect() as conn:
+            with conn.cursor() as cursor:
                 cursor.execute("""
                     SELECT ID, FirstName, LastName, AddressID, Email FROM 
                         customer WHERE ID=%(customer_id)s
@@ -43,4 +56,5 @@ class CustomerRepository():
         # (and its hierarchy) automatically. The other approach you could take is to
         # use a separate set of DTOs (Data Transfer Objects) and manage mapping between
         # the DTO and the Pydantic model.
+            conn.close()
         return Customer.construct(id=row[0], first_name=row[1], last_name=row[2], address=Address.construct(id=row[3]), email_address=row[4])
