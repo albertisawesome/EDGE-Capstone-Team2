@@ -25,3 +25,17 @@ class AddressRepository():
             )
             address.id = cursor.fetchone()[0]
         return address
+
+    def get_by_id(self, id) -> Address:
+        with psycopg2.connect() as db:
+            with db.cursor() as cursor:
+                cursor.execute("""
+                    SELECT ID, Address, City, State, ZipCode FROM 
+                        address WHERE ID=%(address_id)s
+                    """, {
+                    'address_id': id
+                }
+                )
+                row = cursor.fetchone()
+     
+        return Address.construct(id=row[0], address=row[1], city=row[2], state=row[3], zip_code=row[4])

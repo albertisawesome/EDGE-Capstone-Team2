@@ -3,6 +3,7 @@ from models.account import Account
 from models.customer import Customer
 
 class AccountRepository():
+    
     def insert(self, account: Account) -> Account:
         with psycopg2.connect() as db:
             with db.cursor() as cursor:

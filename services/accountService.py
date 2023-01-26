@@ -27,21 +27,9 @@ class AccountService():
     #     return accounts
 
 
-    def get_by_account_number(self, account_number: str) -> Account:
-        with psycopg2.connect() as db:
-            with db.cursor() as cursor:
-                cursor.execute("""
-                    SELECT ID, AccountNumber, CustomerID, CurrentBalance FROM 
-                        account WHERE AccountNumber=%(account_number)s
-                    """, {
-                    'account_number': account_number
-                }
-                )
-                row = cursor.fetchone()
-        return Account.construct(id=row[0], account_number=row[1], customer=Customer.construct(id=row[2]), current_balance=round(row[3], 2))
-
-
     def get_account(self, account_number: str) -> Account:
         account = self.account_repository.get_by_account_number(account_number)
         account.customer = self.customer_repository.get_by_id(account.customer.id)
+        account.customer.address = self.address_repository.get_by_id(account.customer.address.id)
+        return account
 

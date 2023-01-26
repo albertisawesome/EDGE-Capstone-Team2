@@ -27,7 +27,7 @@ class CustomerRepository():
             customer.id = cursor.fetchone()[0]
         return customer
 
-def get_by_id(self, id) -> Customer:
+    def get_by_id(self, id) -> Customer:
         with psycopg2.connect() as db:
             with db.cursor() as cursor:
                 cursor.execute("""
